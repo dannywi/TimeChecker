@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">TimeChecker</string>
+    <string name="check_button">Check</string>
+</resources>
