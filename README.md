@@ -2,7 +2,8 @@
 Checks transportation time tables, giving ones you can ride given current day and time.
 
 # TODO:
-- scrape times from relevant websites
+- scrap only once per day, save result in local file and only fetch from website if file is too old.
+- if website download fail, failback to last file
 - add time left on each row
 - add settings
   - timezone
