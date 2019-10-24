@@ -7,7 +7,7 @@ import java.util.List;
 
 class TempBuilder {
     static AbstractEntity get96Otsu() {
-        TransportationEntity I96ShinagawaEki = new TransportationEntity(Const.entity_1_name);
+        TransportationEntity I96ShinagawaEki = new TransportationEntity(Const.ENTITY_1_NAME);
 
         {
             List<ScheduledTime> times = new ArrayList<>();

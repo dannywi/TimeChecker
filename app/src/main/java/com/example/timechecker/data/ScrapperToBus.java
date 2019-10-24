@@ -6,7 +6,6 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class ScrapperToBus {
@@ -16,17 +15,24 @@ public class ScrapperToBus {
         this.html = html;
     }
 
+    void addIfExists(List<DaySchedule> list, DayType dayType, String dayTableClass) {
+        DaySchedule ds = getDaySchedule(dayType, dayTableClass);
+        if (ds.scheduledTimes.size() > 0)
+            list.add(ds);
+    }
+
     public List<DaySchedule> getSchedule() {
         // TODO: don't need to access website everytime, maybe just once a day.
         // find out how to save this info in device, and only access if file
         // is > a day old. but failback to that file if internet is not working.
         // maybe toast a message on update.
 
-        return Arrays.asList(
-                getDaySchedule(DayType.WEEKDAY, "timeTableWkd"),
-                getDaySchedule(DayType.SATURDAY, "timeTableSat"),
-                getDaySchedule(DayType.SUNDAYHOLIDAY, "timeTableHld")
-        );
+        List<DaySchedule> ret = new ArrayList<>();
+        addIfExists(ret, DayType.WEEKDAY, "timeTableWkd");
+        addIfExists(ret, DayType.SATURDAY, "timeTableSat");
+        addIfExists(ret, DayType.SUNDAYHOLIDAY, "timeTableHld");
+
+        return ret;
     }
 
     private DaySchedule getDaySchedule(DayType dayType, String dayTableClass) {

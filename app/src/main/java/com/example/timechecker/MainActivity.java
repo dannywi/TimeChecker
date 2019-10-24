@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        EntityBuilder.activity = this;
+        EntityBuilder.activity = this; // TODO: fix this hack
         EntityBuilder.cacheAllEntities();
     }
 
@@ -34,8 +34,8 @@ public class MainActivity extends AppCompatActivity {
             // TODO: get string from list of available options
             StringBuilder sb = new StringBuilder();
             Map<DayType, List<Instant>> applicableEntries =
-                    EntityBuilder.getApplicableTimesAllDays(Instant.now(), Const.entity_1_name);
-            sb.append(Const.entity_1_name + "\n");
+                    EntityBuilder.getApplicableTimesAllDays(Instant.now(), Const.ENTITY_1_NAME);
+            sb.append(Const.ENTITY_1_NAME + "\n");
             sb.append(lineBreak);
 
             if (cached_shown.size() >= applicableEntries.size())
@@ -56,4 +56,10 @@ public class MainActivity extends AppCompatActivity {
             textView.setText("ERROR !!!");
         }
     }
+
+    public void onClickedReloadButton(View view) {
+        // TODO: make this choose from options list
+        EntityBuilder.downloadEntityInfo(Const.ENTITY_1_NAME);
+    }
+
 }

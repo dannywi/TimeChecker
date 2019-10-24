@@ -10,18 +10,12 @@ import java.util.Map;
 
 public class TransportationEntity extends AbstractEntity {
     List<DaySchedule> daySchedules = new ArrayList<>();
-    String name;
 
     private static long SECS_IN_MINUTE = 60;
     private static long SECS_IN_HOUR = SECS_IN_MINUTE * 60;
 
-    TransportationEntity(String name) {
-        this.name = name;
-    }
-
-    @Override
-    public String getEntityName() {
-        return name;
+    public TransportationEntity(String name) {
+        super(name);
     }
 
     @Override
@@ -48,8 +42,14 @@ public class TransportationEntity extends AbstractEntity {
         throw new IllegalStateException("Cannot get applicable times all days");
     }
 
+    @Override
     public void addDaySchedule(DayType dayType, List<ScheduledTime> times) {
         daySchedules.add(new DaySchedule(dayType, times));
+    }
+
+    @Override
+    public List<DaySchedule> getDaySchedules() {
+        return daySchedules;
     }
 
     static long getEpochMidnightSeconds() {
