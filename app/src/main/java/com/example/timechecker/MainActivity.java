@@ -7,15 +7,18 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.timechecker.data.DayType;
+import com.example.timechecker.data.DayTypeChecker;
 import com.example.timechecker.data.EntityBuilder;
 
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class MainActivity extends AppCompatActivity {
-    List<String> cached_shown = new ArrayList<>();
+    List<DayType> cached_shown = new ArrayList<>();
+    long epochMilliLastShow = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,35 +29,45 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickedCheckButton(View view) {
-
+        //  Otherwise auto select DayType (https://qiita.com/Chrowa3/items/93c55d83b972d0ddfa10)
         TextView textView = findViewById(R.id.text_results);
 
         String lineBreak = "\n====================\n";
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            // TODO: get string from list of available options
-            StringBuilder sb = new StringBuilder();
-            Map<DayType, List<Instant>> applicableEntries =
-                    EntityBuilder.getApplicableTimesAllDays(Instant.now(), Const.ENTITY_1_NAME);
-            sb.append(Const.ENTITY_1_NAME + "\n");
-            sb.append(lineBreak);
+        // TODO: get string from list of available options
+        StringBuilder sb = new StringBuilder();
+        Map<DayType, List<Instant>> applicableEntries =
+                EntityBuilder.getApplicableTimesAllDays(Instant.now(), Const.ENTITY_1_NAME);
+        sb.append(Const.ENTITY_1_NAME + "\n");
+        sb.append(lineBreak);
 
+        DayType toShow = toggleDayTypeToShow(applicableEntries.keySet());
+        sb.append(toShow);
+        sb.append(lineBreak);
+        sb.append(Utils.convertToTimeAndDistance(applicableEntries.get(toShow), Instant.now()));
+
+        textView.setText(sb.toString());
+    }
+
+    private DayType toggleDayTypeToShow(Set<DayType> applicableEntries) {
+        boolean toggle = System.currentTimeMillis() - epochMilliLastShow < 3 * 1000;
+        epochMilliLastShow = System.currentTimeMillis();
+
+        if (toggle) {
             if (cached_shown.size() >= applicableEntries.size())
                 cached_shown.clear();
 
-            for (Map.Entry<DayType, List<Instant>> entry : applicableEntries.entrySet()) {
-                if (cached_shown.contains(entry.getKey().toString()))
+            for (DayType entry : applicableEntries) {
+                if (cached_shown.contains(entry))
                     continue;
-                sb.append(entry.getKey());
-                sb.append(lineBreak);
-                sb.append(Utils.convertToTimeAndDistance(entry.getValue(), Instant.now()));
-                cached_shown.add(entry.getKey().toString());
-                break;
+                cached_shown.add(entry);
+                return entry;
             }
-
-            textView.setText(sb.toString());
-        } else {
-            textView.setText("ERROR !!!");
         }
+
+        DayType ret = new DayTypeChecker().getCurrentDayType();
+        cached_shown.clear();
+        cached_shown.add(ret);
+        return ret;
     }
 
     public void onClickedReloadButton(View view) {

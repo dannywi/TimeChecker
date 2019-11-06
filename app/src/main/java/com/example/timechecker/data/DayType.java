@@ -11,4 +11,5 @@ public enum DayType {
     HOLIDAY,
     SUNDAYHOLIDAY,
     WEEKDAY,
+    UNKNOWN,
 }
