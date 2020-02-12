@@ -8,20 +8,20 @@ import org.jsoup.select.Elements;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ScrapperToBus {
+class ScrapperToBus {
     private String html;
 
-    public ScrapperToBus(String html) {
+    ScrapperToBus(String html) {
         this.html = html;
     }
 
-    void addIfExists(List<DaySchedule> list, DayType dayType, String dayTableClass) {
+    private void addIfExists(List<DaySchedule> list, DayType dayType, String dayTableClass) {
         DaySchedule ds = getDaySchedule(dayType, dayTableClass);
         if (ds.scheduledTimes.size() > 0)
             list.add(ds);
     }
 
-    public List<DaySchedule> getSchedule() {
+    List<DaySchedule> getSchedule() {
         // TODO: don't need to access website everytime, maybe just once a day.
         // find out how to save this info in device, and only access if file
         // is > a day old. but failback to that file if internet is not working.

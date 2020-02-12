@@ -8,10 +8,10 @@ import org.jsoup.nodes.Document;
 
 import java.io.IOException;
 
-public class AsyncURL extends AsyncTask<String, Void, String> {
+public class AsyncURLEntity extends AsyncTask<String, Void, String> {
     String entityName;
 
-    AsyncURL(String entityName) {
+    AsyncURLEntity(String entityName) {
         this.entityName = entityName;
     }
 
@@ -27,6 +27,7 @@ public class AsyncURL extends AsyncTask<String, Void, String> {
         return "";
     }
 
+    @Override
     public void onPostExecute(String string) {
         // TODO: make this function passed as functor, to remove the dependency
         EntityBuilder.processHtml(entityName, string);

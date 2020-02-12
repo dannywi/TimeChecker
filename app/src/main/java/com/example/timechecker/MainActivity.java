@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.timechecker.data.DayType;
 import com.example.timechecker.data.DayTypeChecker;
 import com.example.timechecker.data.EntityBuilder;
+import com.example.timechecker.holiday.HolidayDates;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -26,6 +27,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         EntityBuilder.activity = this; // TODO: fix this hack
         EntityBuilder.cacheAllEntities();
+        HolidayDates.ensureLatestFile(this);
+        onClickedCheckButton(null);
     }
 
     public void onClickedCheckButton(View view) {
@@ -64,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        DayType ret = new DayTypeChecker().getCurrentDayType();
+        DayType ret = new DayTypeChecker().getCurrentDayType(this);
         cached_shown.clear();
         cached_shown.add(ret);
         return ret;

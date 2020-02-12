@@ -52,7 +52,7 @@ public class EntityBuilder {
     }
 
     public static void downloadEntityInfo(String entityName) {
-        AsyncURL async = new AsyncURL(entityName);
+        AsyncURLEntity async = new AsyncURLEntity(entityName);
         async.execute(Const.getUrl(entityName));
     }
 
